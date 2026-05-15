@@ -9,7 +9,11 @@ const snake = ref([
     y: Math.floor(Math.random() * boardSize)
   }
 ])
+const obstacles = ref([])
 
+const highScore = ref(
+  Number(localStorage.getItem('highScore')) || 0
+)
 const food = ref({
   x: 5,
   y: 5
@@ -30,7 +34,45 @@ function generateFood() {
     y: Math.floor(Math.random() * boardSize)
   }
 }
+//產生障礙物
+function generateObstacles() {
+  const newObstacles = []
 
+  while (newObstacles.length < 5) {
+    const pos = {
+      x: Math.floor(Math.random() * boardSize),
+      y: Math.floor(Math.random() * boardSize)
+    }
+
+    // 避免生成在蛇身上
+    const onSnake = snake.value.some(
+      s => s.x === pos.x && s.y === pos.y
+    )
+
+    // 避免重複
+    const duplicate = newObstacles.some(
+      o => o.x === pos.x && o.y === pos.y
+    )
+
+    // 避免生成在食物上
+    const onFood =
+      food.value.x === pos.x &&
+      food.value.y === pos.y
+
+    if (!onSnake && !duplicate && !onFood) {
+      newObstacles.push(pos)
+    }
+  }
+
+  obstacles.value = newObstacles
+}
+
+//判斷撞障礙物
+function isObstacle(x, y) {
+  return obstacles.value.some(
+    o => o.x === x && o.y === y
+  )
+}
 // 移動蛇
 function moveSnake() {
   const head = { ...snake.value[0] }
@@ -58,8 +100,13 @@ function moveSnake() {
     head.y < 0 ||
     head.y >= boardSize
   ) {
-    isGameOver.value = true
-    clearInterval(gameLoop)
+    gameOver()
+    return
+  }
+
+  // 撞障礙物
+  if (isObstacle(head.x, head.y)) {
+    gameOver()
     return
   }
 
@@ -73,6 +120,7 @@ function moveSnake() {
   ) {
     score.value++
     generateFood()
+    generateObstacles()
   } else {
     // 沒吃到就刪尾巴
     snake.value.pop()
@@ -124,12 +172,22 @@ function restartGame() {
   isGameOver.value = false
 
   generateFood()
-
+  generateObstacles()
   clearInterval(gameLoop)
 
   gameLoop = setInterval(() => {
     moveSnake()
   }, 200)
+}
+
+function gameOver() {
+  isGameOver.value = true
+  clearInterval(gameLoop)
+
+  if (score.value > highScore.value) {
+    highScore.value = score.value
+    localStorage.setItem('highScore', score.value)
+  }
 }
 
 onMounted(() => {
@@ -151,6 +209,7 @@ onBeforeUnmount(() => {
     <h1>Snake Game</h1>
 
     <h2>Score: {{ score }}</h2>
+    <h3>High Score: {{ highScore }}</h3>
     <button @click="restartGame">重新開始</button>
 
     <div class="board">
@@ -160,7 +219,8 @@ onBeforeUnmount(() => {
             class="cell"
             :class="{
               snake: isSnake(x - 1, y - 1),
-              food: isFood(x - 1, y - 1)
+              food: isFood(x - 1, y - 1),
+              obstacle: isObstacle(x - 1, y - 1)
             }"
             
           ></div>
@@ -231,4 +291,9 @@ onBeforeUnmount(() => {
 .food {
   background: red;
 }
+
+.obstacle {
+  background: black;
+}
+
 </style>
