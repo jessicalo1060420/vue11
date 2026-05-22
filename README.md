@@ -1,73 +1,18 @@
-# snake game
+# Evolved Snake
 
-This template should help get you started developing with Vue 3 in Vite.
+## Vercel Link
+https://你的-vercel-網址.vercel.app
 
-## Recommended IDE Setup
+## Design Concept
+我的進化版 Snake 改變了傳統只有固定障礙物與單純吃食物的玩法，加入了會自行移動的敵方蛇障礙物，使玩家除了控制自身移動之外，還必須觀察敵方蛇的行動方向與路線。玩家需要預判敵方蛇可能移動的位置，避免被包圍或突然撞上，增加了遊戲的策略性與緊張感。
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+此外，遊戲中的敵方蛇會隨機改變方向，並在棋盤內持續移動，使每場遊戲的路線都不同。並搭配 MediaPipe 技術，玩家還可以透過手勢操作蛇的方向，讓遊戲從傳統鍵盤控制進化成更具有互動感的體驗。我希望玩家玩完後，能感受到這不只是經典 Snake 的重製版，而是一個加入 AI 敵人與動態追逐感的進化版本。
 
-## Recommended Browser Setup
+## How My Version Is Different
+我的版本加入了會移動的敵方蛇障礙物，玩家不只要吃食物，還要觀察敵方蛇的移動路線與方向。相比原版固定障礙物，整體遊戲更加動態，也更需要即時反應與路線判斷。
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## How To Play
+方向鍵控制蛇移動。
+按下空白鍵開始遊戲。
+避免撞到牆壁、自己的身體與移動中的敵方蛇。
+吃到食物後分數會增加，遊戲速度也會逐漸提升。
