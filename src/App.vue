@@ -26,13 +26,12 @@ const game = useSnakeGame()
     </div>
     <div v-else class="container">
       <h1>Snake Game</h1>
-      
-      <h2>Score: {{ game.score }}</h2>
-      <h3>High Score: {{ game.highScore }}</h3>
+      <h3>Score: {{ game.score }};High Score: {{ game.highScore }}</h3>
+      <h4>按下空白鍵開始遊戲</h4>
       <button @click="game.restartGame">重新開始</button>
       <button @click="game.backToMenu">回主選單</button>
       <h3 v-if="!game.isStarted && !game.isGameOver">
-        按空白鍵開始遊戲
+        按空白鍵或開始鍵開始遊戲
       </h3>
       <div class="game-area">
         <GameBoard
@@ -46,6 +45,18 @@ const game = useSnakeGame()
 
         />
       </div>
+      <div class="joystick">
+        <button @click="game.changeDirection('up')">↑</button>
+
+        <div>
+          <button @click="game.changeDirection('left')">←</button>
+          <button @click="game.startGame()">▶</button>
+          <button @click="game.changeDirection('right')">→</button>
+        </div>
+        <button @click="game.changeDirection('down')">↓</button>
+          
+      </div>
+            
     
     </div>
   </div>
@@ -59,6 +70,13 @@ const game = useSnakeGame()
   flex-direction: column;
   align-items: center;
   font-family: Arial;
+  
+}
+.container h1,
+.container h4,
+.container h3 {
+  line-height: 1.5;
+  margin: 4px 0;
 }
 .setting-panel {
   display: flex;
@@ -66,7 +84,18 @@ const game = useSnakeGame()
   align-items: center;
   font-family: Arial;
 }
+.joystick {
+  margin-top: 15px;
+  text-align: center;
+}
 
+.joystick button {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  font-size: 24px;
+  border-radius: 12px;
+}
 .overlay {
   position: absolute;
   inset: 0;

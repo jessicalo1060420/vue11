@@ -4,6 +4,7 @@ import {
   onBeforeUnmount
 } from 'vue'
 
+
 export function useSnakeGame() {
     const boardSize = 20
     const difficulty = ref('easy')
@@ -39,6 +40,25 @@ export function useSnakeGame() {
     y: 5
     })
 
+    function changeDirection(newDirection) {
+
+        if (newDirection === 'up' && direction.value !== 'down') {
+            direction.value = 'up'
+        }
+
+        if (newDirection === 'down' && direction.value !== 'up') {
+            direction.value = 'down'
+        }
+
+        if (newDirection === 'left' && direction.value !== 'right') {
+            direction.value = 'left'
+        }
+
+        if (newDirection === 'right' && direction.value !== 'left') {
+            direction.value = 'right'
+        }
+    }
+    
     // 產生隨機食物
     function generateFood() {
     food.value = {
@@ -358,10 +378,13 @@ export function useSnakeGame() {
 
     }
 
-    onMounted(() => {
+    onMounted(async() => {
     window.addEventListener('keydown', handleKey)
     generateFood()
     generateObstacles()
+
+    await initMediaPipe()
+    await startCamera()
     })
 
     onBeforeUnmount(() => {
@@ -389,7 +412,8 @@ export function useSnakeGame() {
         isSnake,
         isFood,
         isObstacle,
-        backToMenu
+        backToMenu,
+        changeDirection
 
     }
 }
